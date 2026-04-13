@@ -2,38 +2,40 @@ public class Movie {
     public static final int CHILDRENS = 2;
     public static final int REGULAR = 0;
     public static final int NEW_RELEASE = 1;
+
     private String title;
-    private int priceCode;
+    private Price price;   // <-- changed from int priceCode
+
     public Movie(String newtitle, int newpriceCode) {
         title = newtitle;
-        priceCode = newpriceCode;
+        setPriceCode(newpriceCode);   // use setter to initialize price
     }
+
     public int getPriceCode() {
-        return priceCode;
+        return price.getPriceCode();
     }
+
     public void setPriceCode(int arg) {
-        priceCode = arg;
-    }
-    public String getTitle (){
-        return title;
-    };
-    double getCharge(int daysRented) {
-        double result = 0;
-        switch (getPriceCode()) {
-            case Movie.REGULAR:
-                result += 2;
-                if (daysRented > 2)
-                    result += (daysRented - 2) * 1.5;
+        switch (arg) {
+            case REGULAR:
+                price = new RegularPrice();
                 break;
-            case Movie.NEW_RELEASE:
-                result += daysRented * 3;
+            case CHILDRENS:
+                price = new ChildrensPrice();
                 break;
-            case Movie.CHILDRENS:
-                result += 1.5;
-                if (daysRented > 3)
-                    result += (daysRented - 3) * 1.5;
+            case NEW_RELEASE:
+                price = new NewReleasePrice();
                 break;
+            default:
+                throw new IllegalArgumentException("Incorrect Price Code");
         }
-        return result;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public double getCharge(int daysRented) {
+        return price.getCharge(daysRented);
     }
 }
