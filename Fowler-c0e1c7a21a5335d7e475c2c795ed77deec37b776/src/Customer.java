@@ -46,9 +46,6 @@ class Customer {
         return result;
     }
     private int getFrequentRenterPoints(Rental each) {
-        int points = 1;
-        if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDaysRented() > 1)
-            points++;
-        return points;
+        return each.getFrequentRenterPoints();
     }
 }
